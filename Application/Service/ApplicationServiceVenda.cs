@@ -1,8 +1,8 @@
 ﻿using Application.DTO.DTO;
 using Application.Interface;
+using AutoMapper;
 using Domain.Core.Interfaces.Services;
 using Domain.Entities;
-using Infrastruture.CrossCutting.Adapter.Interfaces;
 using System.Collections.Generic;
 
 namespace Application.Service
@@ -10,13 +10,12 @@ namespace Application.Service
     public class ApplicationServiceVenda: IApplicationServiceVenda
     {
         private readonly IVendaService _vendaService;
-        private readonly IMapperCriarVenda _mapperCriarVenda;
-        private readonly IMapperLerVenda _mapperLerVenda;
-        public ApplicationServiceVenda(IVendaService vendaService, IMapperCriarVenda mapperCriarVenda, IMapperLerVenda mapperLerVenda)
+        private readonly IMapper _mapper;
+        public ApplicationServiceVenda(IVendaService vendaService, IMapper mapper)
         {
             _vendaService = vendaService;
-            _mapperCriarVenda = mapperCriarVenda;
-            _mapperLerVenda = mapperLerVenda;
+            _mapper = mapper;
+           
         }
 
         public void CancelarVenda(int id)
@@ -31,7 +30,7 @@ namespace Application.Service
 
         public void RealizarVenda(CriarVendaDto criarVendaDto)
         {
-            var objSale = _mapperCriarVenda.MapperToEntity(criarVendaDto);
+            var objSale = _mapper.Map<Venda>(criarVendaDto);
             
         }
 
