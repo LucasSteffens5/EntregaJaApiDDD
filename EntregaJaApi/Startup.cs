@@ -29,9 +29,9 @@ namespace EntregaJaApi
             });
         }
 
-        public void ConfigureContainer(ContainerBuilder Builder)
+        public void ConfigureContainer(ContainerBuilder builder)
         {
-            Builder.RegisterModule(new ModuleIOC());
+            builder.RegisterModule(new DefaultModule(Configuration));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,5 +55,6 @@ namespace EntregaJaApi
                 endpoints.MapControllers();
             });
         }
+
     }
 }

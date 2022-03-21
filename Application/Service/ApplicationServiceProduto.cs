@@ -1,8 +1,8 @@
 ﻿using Application.DTO.DTO;
 using Application.Interface;
+using AutoMapper;
 using Domain.Core.Interfaces.Services;
 using Domain.Entities;
-using Infrastruture.CrossCutting.Adapter.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,26 +11,24 @@ namespace Application.Service
     public class ApplicationServiceProduto : IApplicationServiceProduto
     {
         private readonly IProdutoService _produtoService;
-        private readonly IMapperLerProduto _mapperLerProduto;
-        private readonly IMapperAtualizarProduto _mapperAtualizarProduto;
-        private readonly IMapperCriarProduto _mapperCriarProduto;
-        public ApplicationServiceProduto(IProdutoService produtoService, IMapperLerProduto mapperLerProduto, IMapperAtualizarProduto mapperAtualizarProduto, IMapperCriarProduto mapperCriarProduto)
+        private readonly IMapper _mapper;
+       
+        public ApplicationServiceProduto(IProdutoService produtoService, IMapper mapper)
         {
             _produtoService = produtoService;
-            _mapperLerProduto = mapperLerProduto;
-            _mapperAtualizarProduto = mapperAtualizarProduto;
-            _mapperCriarProduto = mapperCriarProduto;
+            _mapper = mapper;
+            
         }
 
         public void AdicionarProduto(CriarProdutoDto produtoDto)
         {
-            var objProduct = _mapperCriarProduto.MapperToEntity(produtoDto);
+            var objProduct = _mapper.Map<Produto>(produtoDto);
             _produtoService.AddAsync(objProduct);
         }
 
         public void AtualizarProduto(int id, AtualizarProdutoDto produtoDto)
         {
-            var objProduct = _mapperAtualizarProduto.MapperToEntity(produtoDto);
+            var objProduct = _mapper.Map<Produto>(produtoDto);
             _produtoService.AtualizarProduto(objProduct);
         }
 
@@ -43,7 +41,7 @@ namespace Application.Service
         public LerProdutoDto RecuperarProdutoPorId(int id)
         {
             var product = _produtoService.BuscarProdutoPorIdNaBaseDeDados(id).Result;
-            return _mapperLerProduto.MapperToDTO(product);
+            return _mapper.Map<LerProdutoDto>(product);
         }
         
 
